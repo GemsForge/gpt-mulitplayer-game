@@ -1,0 +1,4 @@
+import type { Lantern } from '../model/useLanternwakeGame';
+export function LanternwakeBoard({lanterns,choose,selected,litCount}:{lanterns:Lantern[];choose:(id:number)=>void;selected:number[];litCount:number}) {
+ return <section className="play-zone"><div className="shoreline"><span>FOG BANK · EAST BREAKWATER</span><span>{litCount===4?'THE COAST IS AWAKE':'TIDE RISING · FIND THE PAIRS'}</span></div><div className="lantern-grid">{lanterns.map(l=><button key={l.id} className={`lantern ${l.color} ${l.revealed?'revealed':''} ${l.lit?'lit':''} ${selected.includes(l.id)?'selected':''}`} onClick={()=>choose(l.id)} aria-label={`Lantern ${l.id+1}`}>{(l.revealed||l.lit)&&<span>{l.glyph}</span>}</button>)}</div><div className="turn-note"><span className="signal-line"/> {selected.length===1?'ASTRA SENT A SIGNAL · MICA IS LISTENING':'SELECT A LANTERN TO SEND A SIGNAL'}</div></section>
+}
