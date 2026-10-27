@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Badge, Button, Progress, SegmentedControl, TextInput } from '@mantine/core';
+import { calculateComboScore } from '../domain/scoring';
 
 type Phase = 'lobby' | 'dress' | 'reveal' | 'results';
 type Look = { name: string; title: string; top: number; accessory: number; skin: number; body: number; hair: number; headwear: number; audio: number; phrase: string; score: number };
@@ -48,7 +49,7 @@ export function App() {
   const [identity, setIdentity] = useState('NON-B'), [skin, setSkin] = useState(1), [body, setBody] = useState(1), [hair, setHair] = useState(2), [hat, setHat] = useState(0), [audio, setAudio] = useState(0);
   const [top, setTop] = useState(0), [accessory, setAccessory] = useState(0), [phrase, setPhrase] = useState(0), [locked, setLocked] = useState(false);
   const [vote, setVote] = useState<string | null>(null);
-  const score = useMemo(() => Math.min(99, 57 + top * 7 + accessory * 4 + body * 3 + phrase * 2), [top, accessory, body, phrase]);
+  const score = useMemo(() => calculateComboScore({ top, accessory, body, phrase }), [top, accessory, body, phrase]);
   const player: Look = { name: name.trim().toUpperCase() || 'ALEX', title: ['The Founder', 'The Hacker', 'The PM', 'The VC Whisperer'][top], top, accessory, skin, body, hair, headwear: hat, audio, phrase: phrases[phrase], score };
   const looks = [player, ...competitors];
   const rankings = [...looks].map(look => ({ ...look, score: look.score + (vote === look.name ? 7 : 0) })).sort((a, b) => b.score - a.score);
