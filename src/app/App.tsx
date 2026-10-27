@@ -21,9 +21,10 @@ const competitors: Look[] = [
 ];
 
 function Avatar({ look, compact = false }: { look: Pick<Look, 'top' | 'accessory' | 'skin' | 'body' | 'hair' | 'headwear' | 'audio' | 'phrase'>; compact?: boolean }) {
+  const idleDelay = -((look.skin * 0.37) + (look.body * 0.23) + (look.hair * 0.11));
   return <div className={`avatar-scene ${compact ? 'compact' : ''}`}>
     <div className="scene-orb one"/><div className="scene-orb two"/>
-    <div className={`avatar body-shape-${look.body}`} style={{ '--skin': tones[look.skin] } as React.CSSProperties}>
+    <div className={`avatar body-shape-${look.body}`} style={{ '--skin': tones[look.skin], '--idle-delay': `${idleDelay}s` } as React.CSSProperties}>
       <div className="head"><div className={`hair hair-${look.hair}`}><i/><i/><i/></div>{look.headwear > 0 && <div className={`headwear headwear-${look.headwear}`}/>}<div className="face"><i className="eye left"/><i className="eye right"/><span className="smirk"/></div>{look.audio > 0 && <div className={`audio-gear audio-${look.audio}`}><i/><i/></div>}<div className="neck"/></div>
       <div className={`torso top-${look.top}`}><span className="logo">{'{ }'}</span><div className="zip"/></div>
       <div className="arm arm-left"/><div className="arm arm-right"/><div className="legs"><span/><span/></div><div className="shoe shoe-left"/><div className="shoe shoe-right"/>
